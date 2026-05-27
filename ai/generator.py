@@ -1,10 +1,13 @@
 import os
+import streamlit as st
 from dotenv import load_dotenv
 from groq import Groq
 
 load_dotenv()
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+API_KEY = os.getenv("GROQ_API_KEY") or st.secrets["GROQ_API_KEY"]
+
+client = Groq(api_key=API_KEY)
 
 
 def generate_question(topic, difficulty):
@@ -26,38 +29,31 @@ def generate_question(topic, difficulty):
     Return STRICTLY in this format:
 
     ## Problem Statement
-    Write a clear and complete problem statement.
+    Clear and complete problem description.
 
     ## Constraints
-    Include realistic constraints like:
     - input size
     - value ranges
-    - time complexity expectations
+    - realistic constraints
 
     ## Example 1
     Input:
-    ...
     Output:
-    ...
     Explanation:
-    ...
 
     ## Example 2
     Input:
-    ...
     Output:
-    ...
     Explanation:
-    ...
 
     ## Edge Cases
-    Mention important edge cases.
+    Important corner cases.
 
     ## Hint
-    Give a useful hint without revealing full solution.
+    Helpful hint without full solution.
 
     ## Expected Complexity
-    Mention expected time and space complexity.
+    Expected time and space complexity.
 
     Generate only ONE question.
     """

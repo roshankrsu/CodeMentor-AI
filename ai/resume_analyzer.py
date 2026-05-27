@@ -1,11 +1,14 @@
 import os
+import streamlit as st
 from dotenv import load_dotenv
 from groq import Groq
 import fitz
 
 load_dotenv()
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+API_KEY = os.getenv("GROQ_API_KEY") or st.secrets["GROQ_API_KEY"]
+
+client = Groq(api_key=API_KEY)
 
 
 def extract_resume_text(uploaded_file):
@@ -55,5 +58,5 @@ def analyze_resume(resume_text):
 
         return chat.choices[0].message.content
 
-    except Exception:
-        return "❌ Resume analysis unavailable."
+    except Exception as e:
+        return f"❌ Resume analysis unavailable: {str(e)}"
