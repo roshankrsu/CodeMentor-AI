@@ -10,59 +10,28 @@ API_KEY = os.getenv("GROQ_API_KEY") or st.secrets["GROQ_API_KEY"]
 client = Groq(api_key=API_KEY)
 
 
-def generate_question(topic, difficulty):
+def review_code(question, code):
     prompt = f"""
-    You are an expert FAANG coding interviewer.
+    You are a senior software engineering interviewer.
 
-    Generate ONE high-quality coding interview question.
+    Review the candidate's solution.
 
-    Requirements:
-    - Topic must be exactly: {topic}
-    - Difficulty must be exactly: {difficulty}
-    - Question should be realistic like LeetCode / Google / Amazon interview style
-    - Problem must be clearly defined
-    - No ambiguity
-    - Include all constraints
-    - Include examples
-    - Include explanation
+    Coding Question:
+    {question}
 
-    Return STRICTLY in this format:
+    Candidate Solution:
+    {code}
 
-    ## Problem Statement
-    Write a clear and complete problem statement.
+    Provide structured feedback:
 
-    ## Constraints
-    Include realistic constraints like:
-    - input size
-    - value ranges
-    - time complexity expectations
+    1. Correctness
+    2. Bugs / Issues
+    3. Time Complexity
+    4. Space Complexity
+    5. Optimization Suggestions
+    6. Final Interview Score (out of 10)
 
-    ## Example 1
-    Input:
-    ...
-    Output:
-    ...
-    Explanation:
-    ...
-
-    ## Example 2
-    Input:
-    ...
-    Output:
-    ...
-    Explanation:
-    ...
-
-    ## Edge Cases
-    Mention important edge cases.
-
-    ## Hint
-    Give a useful hint without revealing full solution.
-
-    ## Expected Complexity
-    Mention expected time and space complexity.
-
-    Generate only ONE question.
+    Be clear and professional.
     """
 
     try:
@@ -73,11 +42,10 @@ def generate_question(topic, difficulty):
                     "content": prompt
                 }
             ],
-            model="llama-3.3-70b-versatile",
-            temperature=0.4
+            model="llama-3.3-70b-versatile"
         )
 
         return chat.choices[0].message.content
 
     except Exception as e:
-        return f"❌ AI service temporarily unavailable: {str(e)}"
+        return f"❌ AI review unavailable: {str(e)}"
