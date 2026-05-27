@@ -62,6 +62,22 @@ def login_user(email, password):
 
     return False, "Invalid password"
 
+def login_after_registration(email):
+    user = users.find_one({"email": email})
+
+    if not user:
+        return None
+
+    token = jwt.encode(
+        {"email": user["email"]},
+        SECRET,
+        algorithm="HS256"
+    )
+
+    return {
+        "user": user,
+        "token": token
+    }
 
 def verify_token(token):
     try:
