@@ -1,0 +1,11 @@
+streamlit
+streamlit-cookies-manager
+streamlit-ace
+pymongo
+python-dotenv
+bcrypt
+PyJWT
+groq
+pymupdf
+pandas
+plotly
